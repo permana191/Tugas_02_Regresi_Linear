@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Social Analytics | TA-02</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts untuk tipografi elegan -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-surface">
+
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand fw-bold text-primary" href="#">
+                <i class="fa-solid fa-chart-line me-2"></i>Social<span class="text-dark">Reciprocity</span>
+            </a>
+            <span class="navbar-text fw-medium text-muted small d-none d-md-inline border-start ps-3 ms-2">
+                Studi Kasus TA-02 | Regresi Linear Sederhana
+            </span>
+        </div>
+    </nav>
+
+    <main class="container-fluid px-4 px-lg-5 my-4">
+        <!-- Header Section -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-2 rounded-pill mb-3 text-uppercase tracking-wide">
+                    Behaviour Analytics Model
+                </span>
+                <h1 class="display-5 fw-bold text-dark mb-3">Prediksi Penerimaan Likes Media Sosial</h1>
+                <p class="lead text-muted col-lg-6 mx-auto fw-normal">
+                    Analisis statistik timbal balik sosial menggunakan algoritma Regresi Linear. Memprediksi secara akurat jumlah <b class="text-dark">Likes Diterima (y)</b> berdasarkan tingkat <b class="text-dark">Likes ke Pengguna Lain (X)</b>.
+                </p>
+            </div>
+        </div>
+
+        <div class="row g-5">
+            <!-- Left Panel: Predictive Engine -->
+            <div class="col-xl-4 col-lg-5">
+                <div class="card elegant-card h-100 border-0">
+                    <div class="card-header bg-transparent border-0 pt-4 px-4 pb-0">
+                        <h5 class="fw-bold text-dark d-flex align-items-center mb-1">
+                            <div class="icon-square bg-primary-subtle text-primary rounded me-3">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            Simulasi Prediksi
+                        </h5>
+                        <p class="text-muted small ms-5 mb-0">Atur parameter interaksi mandiri.</p>
+                    </div>
+                    
+                    <div class="card-body p-4 mt-2">
+                        <form action="/predict" method="POST" id="predictionForm">
+                            <div class="mb-4 bg-light p-3 rounded-4 border">
+                                <label for="likes_given" class="form-label fw-bold text-dark mb-3 d-flex justify-content-between">
+                                    <span>Target Likes Diberikan (X)</span>
+                                    <span class="badge bg-primary rounded-pill">Input Variabel</span>
+                                </label>
+                                <input type="number" class="form-control form-control-lg fw-bold text-center border-0 shadow-sm custom-input" id="likes_given" name="likes_given" min="0" max="10000" value="250" required>
+                                
+                                <div class="mt-4 px-2">
+                                    <input type="range" class="form-range custom-slider" id="likes_slider" min="0" max="2000" step="10" value="250">
+                                </div>
+                            </div>
+
+                            <div class="live-estimate-box p-4 rounded-4 mb-4 position-relative overflow-hidden">
+                                <div class="position-relative z-1">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="text-white-50 fw-medium small">Estimasi Real-time (y)</span>
+                                        <span class="badge bg-white text-primary fw-bold shadow-sm" id="liveRatio">0.0% Ratio</span>
+                                    </div>
+                                    <h2 class="fw-bold text-white mb-0" id="liveEstimate">0 Likes</h2>
+                                </div>
+                                <div class="circle-decoration"></div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold rounded-3 shadow-hover btn-animate">
+                                Eksekusi Model Prediksi <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Model Analytics & Metrics -->
+            <div class="col-xl-8 col-lg-7">
+                <!-- Top Row: Key Metrics -->
+                <div class="row g-4 mb-4">
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="card metric-card border-0">
+                            <div class="card-body p-4">
+                                <div class="text-muted fw-semibold small text-uppercase mb-2">Total Observasi</div>
+                                <h3 class="fw-bold text-dark mb-1">{{ "{:,}".format(metrics.dataset_count) }}</h3>
+                                <div class="small text-success fw-medium"><i class="fa-solid fa-check-circle me-1"></i>Data Tervalidasi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="card metric-card border-0">
+                            <div class="card-body p-4">
+                                <div class="text-muted fw-semibold small text-uppercase mb-2">Korelasi (r)</div>
+                                <h3 class="fw-bold text-primary mb-1">{{ "%.4f"|format(metrics.corr) }}</h3>
+                                <div class="small text-primary fw-medium"><i class="fa-solid fa-arrow-trend-up me-1"></i>Korelasi Positif</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="card metric-card border-0">
+                            <div class="card-body p-4">
+                                <div class="text-muted fw-semibold small text-uppercase mb-2">R-Squared (R²)</div>
+                                <h3 class="fw-bold text-warning mb-1">{{ "%.4f"|format(metrics.r2) }}</h3>
+                                <div class="small text-muted fw-medium">Variansi Terjelaskan</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="card metric-card border-0">
+                            <div class="card-body p-4">
+                                <div class="text-muted fw-semibold small text-uppercase mb-2">RMSE (Error)</div>
+                                <h3 class="fw-bold text-danger mb-1">±{{ "%.4f"|format(metrics.rmse) }}</h3>
+                                <div class="small text-danger fw-medium"><i class="fa-solid fa-triangle-exclamation me-1"></i>Batas Deviasi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Middle Row: Equation & Visuals -->
+                <div class="card elegant-card border-0 mb-4">
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-md-5 p-4 border-end bg-light rounded-start-4 d-flex flex-column justify-content-center">
+                                <div class="text-muted fw-bold small text-uppercase mb-3 tracking-wide">Persamaan Matematis</div>
+                                <div class="equation-box p-3 bg-white border rounded-3 text-center shadow-sm mb-4">
+                                    <h4 class="fw-bold text-primary font-monospace mb-0">y = {{ "%.4f"|format(metrics.intercept) }} + ({{ "%.4f"|format(metrics.slope) }}X)</h4>
+                                </div>
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="icon-sm bg-primary-subtle text-primary rounded-circle me-3"><i class="fa-solid fa-y"></i></div>
+                                    <div>
+                                        <div class="fw-bold text-dark small">Intersep (β₀) : {{ "%.4f"|format(metrics.intercept) }}</div>
+                                        <div class="text-muted extra-small">Prediksi dasar likes yang diterima tanpa interaksi aktif.</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start">
+                                    <div class="icon-sm bg-success-subtle text-success rounded-circle me-3"><i class="fa-solid fa-x"></i></div>
+                                    <div>
+                                        <div class="fw-bold text-dark small">Koefisien (β₁) : {{ "%.4f"|format(metrics.slope) }}</div>
+                                        <div class="text-muted extra-small">Multiplier untuk setiap 1 likes yang Anda berikan.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Gambar EDA yang sudah diperbaiki path-nya -->
+                            <div class="col-md-7 p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted fw-bold small text-uppercase tracking-wide">Eksplorasi Data (EDA)</span>
+                                    <ul class="nav nav-pills custom-pills" id="eda-tabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active py-1 px-3 small fw-bold" id="reg-tab" data-bs-toggle="pill" data-bs-target="#reg" type="button" role="tab">Best-Fit Line</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link py-1 px-3 small fw-bold" id="res-tab" data-bs-toggle="pill" data-bs-target="#res" type="button" role="tab">Residuals</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content" id="eda-tabs-content">
+                                    <div class="tab-pane fade show active" id="reg" role="tabpanel">
+                                        <div class="img-container border rounded-3 bg-light p-1">
+                                            <!-- Path diperbaiki mengarah ke folder images -->
+                                            <img src="{{ url_for('static', filename='images/Figure_1.png') }}" class="img-fluid rounded" alt="Garis Regresi Linear">
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="res" role="tabpanel">
+                                        <div class="img-container border rounded-3 bg-light p-1">
+                                            <!-- Path diperbaiki mengarah ke folder images -->
+                                            <img src="{{ url_for('static', filename='images/Figure_2.png') }}" class="img-fluid rounded" alt="Distribusi Residual">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

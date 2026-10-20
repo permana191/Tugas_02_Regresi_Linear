@@ -1,0 +1,109 @@
+/* Import Tipografi Modern */
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f3f6f9;
+    color: #1e293b;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Navigasi Glassmorphism */
+.glass-nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Kartu Utama & Metrik */
+.elegant-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(14, 23, 40, 0.04);
+}
+
+.metric-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(13, 110, 253, 0.08);
+    border-color: rgba(13, 110, 253, 0.15);
+}
+
+/* Kotak Input Visual */
+.custom-input {
+    background-color: #ffffff;
+    font-size: 1.5rem;
+    color: #0d6efd !important;
+}
+
+.custom-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Kotak Hasil Real-time (Gradient Biru) */
+.live-estimate-box {
+    background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
+    box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
+}
+
+.circle-decoration {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    top: -50px;
+    right: -30px;
+}
+
+/* Ikon dan Utility */
+.icon-square {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.icon-sm {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+.tracking-wide {
+    letter-spacing: 0.05em;
+}
+
+.extra-small {
+    font-size: 0.75rem;
+}
+
+/* Tab EDA Custom */
+.custom-pills .nav-link {
+    color: #6c757d;
+    border-radius: 50rem;
+    transition: all 0.2s;
+}
+.custom-pills .nav-link.active {
+    background-color: #0d6efd;
+    box-shadow: 0 4px 10px rgba(13,110,253,0.3);
+}
+
+/* Hover Button Animasi */
+.btn-animate {
+    transition: all 0.3s ease;
+}
+.btn-animate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+}
